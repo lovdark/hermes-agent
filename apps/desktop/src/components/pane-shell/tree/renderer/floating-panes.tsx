@@ -15,10 +15,10 @@
 import { useStore } from '@nanostores/react'
 import { type PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react'
 
+import { Codicon } from '@/components/ui/codicon'
 import { ContribBoundary } from '@/contrib/react/boundary'
 import { useContributions } from '@/contrib/react/use-contributions'
 import type { Contribution } from '@/contrib/types'
-import { Codicon } from '@/components/ui/codicon'
 import { readJson, writeJson } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 
@@ -80,18 +80,20 @@ function FloatingPane({ pane }: { pane: Contribution }) {
   )
 
   // Track the viewport so an edge-anchored pane rides its edge on resize.
-  useEffect(() => {
-    const onResize = () => {
-      const next = viewportNow()
+  // The previous-size read lives in the handler (not a useEffect body): it's
+  // window geometry, not a mirrored reactive value.
+  const handleResize = useCallback(() => {
+    const next = viewportNow()
 
-      setRect(current => reflowRect(current, anchor, viewport.current, next))
-      viewport.current = next
-    }
-
-    window.addEventListener('resize', onResize)
-
-    return () => window.removeEventListener('resize', onResize)
+    setRect(current => reflowRect(current, anchor, viewport.current, next))
+    viewport.current = next
   }, [anchor])
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [handleResize])
 
   const onPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest('[data-floating-no-drag]')) {

@@ -38,8 +38,8 @@ import {
   splitGroupZone as splitGroupZoneOp,
   type SplitNode
 } from './model'
-import { rootChildSide } from './renderer/track-model'
 import { FLOATING_PLACEMENT } from './renderer/floating-rect'
+import { rootChildSide } from './renderer/track-model'
 
 // v2: v1 trees were saved against placeholder panes with index-order zone
 // assignment (chat could land in a corner cell). Retire them wholesale.
@@ -838,6 +838,7 @@ function adoptContributedPanes(): void {
   }
 
   const dismissed = $dismissedPanes.get()
+
   // `placement: 'floating'` opts OUT of the tree entirely — those panes render
   // as fixed cards above it (renderer/floating-panes.tsx). Adopting one would
   // turn it into a track that steals width from a zone, which is the whole
