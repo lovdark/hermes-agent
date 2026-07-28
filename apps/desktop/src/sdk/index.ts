@@ -221,6 +221,12 @@ export { profileColor, profileColorSoft } from '@/lib/profile-color'
 export { queryClient } from '@/lib/query-client'
 
 export const PANES_AREA = 'panes'
+/** Pane placement roles. `'floating'` is the one NON-tiling value: the pane is
+ *  excluded from the layout tree and rendered as a fixed, draggable card above
+ *  it — it takes no width from any zone, has no tab, and can't be docked.
+ *  Pair it with `anchor` (spawn corner, default `'top-right'`) plus
+ *  `width`/`height`. */
+export type { FloatingAnchor } from '@/components/pane-shell/tree/renderer/floating-rect'
 export const STATUSBAR_AREAS = { left: 'statusBar.left', right: 'statusBar.right' } as const
 export const TITLEBAR_AREAS = { center: 'titleBar.center', left: 'titleBar.left', right: 'titleBar.right' } as const
 
